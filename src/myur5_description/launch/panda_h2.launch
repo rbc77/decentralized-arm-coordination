@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<launch>
+
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="false"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+    <arg name="robot_name"/>
+    <arg name="init_pose"/>
+
+    <param name="robot_description" textfile="$(find myur5_description)/urdf/panda_robot_gazebo.urdf"/>
+
+
+    <!-- <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-param robot_description -urdf -model panda"/> -->
+
+    <!-- <node name="joint_state_publisher" type="joint_state_publisher" pkg="joint_state_publisher" /> -->
+
+    <rosparam command="load" file="$(find myur5_description)/config/panda_controller.yaml"/>
+
+    <rosparam file="$(find myur5_description)/config/joint_state_publisher.yaml" command="load"/>
+    <node pkg="controller_manager" type="spawner" name="robot2_controller_spawner" ns="/robot2" args="joint_state_controller" output="screen"/>
+
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+    args ="$(arg init_pose) -param robot_description -urdf -model $(arg robot_name) -x 1.5 -y 0.0 -z 0
+        -J panda_joint1 0.0
+        -J panda_joint2 0.0
+        -J panda_joint3 0.0
+        -J panda_joint4 0.0
+        -J panda_joint5 0.0
+        -J panda_joint6 0.0
+        -J panda_joint7 0.0">
+        
+    </node>
+
+    <node pkg="controller_manager"
+        type="spawner"
+        name="panda_controller_spawner"
+        respawn="false" output="screen"
+        args="panda_controller"
+    />
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"> <param name="tf_prefix" value="robot2_tf"/> 
+    </node>
+
+    <param name="rate" value="2500"/>
+</launch>

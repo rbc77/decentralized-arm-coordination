@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="myur5">
+    <link name="world"/>
+    <link name="pedestal">
+        <inertial>
+            <origin xyz="0 0 0.5" rpy="0 0 0"/>
+            <mass value="20"/>
+            <inertia ixx="200" ixy="200" ixz="200" iyy="200" iyz="200" izz="200"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0.5" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 1 1"/>
+            </geometry>
+            <material name="Orange">
+                <color rgba="1.0 0.5 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.5" rpy="0 0 0"/>
+            <geometry>
+                <box size="1 1 1"/>
+            </geometry>
+        </collision>
+    </link>
+    <gazebo reference="pedestal">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <material>Gazebo/Orange</material>
+    </gazebo>
+    <joint name="world_joint" type="fixed">
+        <parent link="world" />
+        <child link="pedestal" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
+
+    <!-- UR5 Robot Includes -->
+    <xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro"/>
+    <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro"/>
+
+    <!-- Robotiq Gripper Include -->
+
+    <!-- Instantiate UR5 Robot -->
+    <xacro:ur5_robot prefix="" joint_limited="true" transmission_hw_interface="$(arg transmission_hw_interface)" />
+
+    <!-- Fixed joint to connect pedestal to base_link -->
+    <joint name="base_joint" type="fixed">
+        <parent link="pedestal"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 1" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Vacuum Gripper Link -->
+    <link name="vacuum_gripper">
+        <inertial>
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+            <mass value="0.5"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="0.1" radius="0.03"/>
+            </geometry>
+            <material name="Red">
+                <color rgba="0 0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="0.1" radius="0.03"/>
+            </geometry>
+        </collision>
+    </link>
+    <gazebo reference="vacuum_gripper">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <material>Gazebo/Green</material>
+    </gazebo>
+
+    <!-- Fixed joint attaching vacuum gripper to tool0 -->
+    <joint name="vacuum_gripper_fixed_joint" type="fixed">
+        <parent link="tool0"/>
+        <child link="vacuum_gripper"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+</robot>

@@ -1,0 +1,4 @@
+# Publish all joint states (required for robot_state_publisher and TF)
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 100  # Hz

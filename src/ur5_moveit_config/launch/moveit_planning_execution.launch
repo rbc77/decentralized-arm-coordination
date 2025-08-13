@@ -1,0 +1,33 @@
+<launch>
+  <group ns="robot1">
+    <rosparam command="load" file="$(find ur5_moveit_config)/config/joint_names.yaml" />
+
+   
+    <!-- Load robot description -->
+    <param name="robot_description" command="$(find xacro)/xacro $(find myur5_description)/urdf/myur5.urdf.xacro"/>
+
+    <!-- Load controllers for MoveIt -->
+    <rosparam file="$(find ur5_moveit_config)/config/controllers.yaml"/>
+
+    <!-- Load trajectory execution settings -->
+    <rosparam file="$(find ur5_moveit_config)/config/trajectory_execution.yaml"/>
+
+    <!-- Start the controller spawners -->
+    <node name="controller_spawner" pkg="controller_manager" type="spawner"
+        respawn="false" output="screen"
+        args="arm_controller"
+        ns="/controller_manager" />
+
+
+    <!-- Start Move Group -->
+    <include file="$(find ur5_moveit_config)/launch/move_group.launch">
+      <arg name="allow_trajectory_execution" value="true"/>
+
+    </include>
+
+    <!-- Start RViz with MoveIt config -->
+    <include file="$(find ur5_moveit_config)/launch/moveit_rviz.launch">
+      <arg name="rviz_config" value="true"/>
+    </include>
+  </group>
+</launch>
