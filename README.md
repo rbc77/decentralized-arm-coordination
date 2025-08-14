@@ -12,20 +12,19 @@
 
 ## 📦 Repository Structure
 ```
+```text
 myur5_description/
 ├── launch/
-│   └── myur5.launch                 # spawns both robots + tables
+│   └── myur5.launch               # spawns both robots + tables
 ├── config/
-│   ├── ur5_moveit_config/           # MoveIt! setup for UR5
-│   └── panda/                       # camera plugin, URDF patches
+│   ├── ur5_moveit_config/         # MoveIt! setup for UR5
+│   └── panda/                     # camera plugin, URDF patches
 ├── scripts/
-│   ├── motion.py                    # UR5 dance trajectory
-│   ├── panda_mover.py               # Panda “home” pose
-│   ├── ik_solver.py                 # green-object tracker (legacy)
-│   └── panda_mimic.py               # IBVS mimicking node
-└── README.md                        # this file
-```
-
+│   ├── motion.py                  # UR5 dance trajectory
+│   ├── panda_mover.py             # Panda “home” pose
+│   ├── ik_solver.py               # green-object tracker (legacy)
+│   └── panda_mimic.py             # IBVS mimicking node
+└── README.md                      # this file
 ---
 
 ## 🚀 Quick Start
