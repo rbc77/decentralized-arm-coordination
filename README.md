@@ -6,7 +6,7 @@
 ---
 
 ## 🎬 Demo Video  
-*(insert link here once uploaded)*
+*[(https://github.com/rbc77/decentralized-arm-coordination/blob/main/sample_working_video%20(1).mp4))*
 
 ---
 
